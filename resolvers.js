@@ -29,4 +29,38 @@ export const resolvers = {
       return reviews.filter((review) => review.authorId === parent.id);
     },
   },
+
+  Mutation: {
+    deleteGame: (parent, { id }) => {
+      const reaminingGames = games.filter((game) => game.id !== id);
+
+      return {
+        msg: `Game with this id ${id} deleted Successfully!`,
+        reaminingGames,
+      };
+    },
+    deleteAuthor: (parent, { name }) => {
+      const remainingAuthors = authors.filter((author) => author.name !== name);
+      return {
+        msg: `Author with the name "${name}" deleted successfully!`,
+        remainingAuthors: remainingAuthors,
+      };
+    },
+
+    addGame: (parent, { game }) => {
+      let newGame = { ...game, id: Math.floor(Math.random() * 1000) };
+      games.push(game);
+      return newGame;
+    },
+
+    editGame: (parent, { edit, id }) => {
+      let updatedGame = games.map((game) => {
+        if (game.id === id) {
+          return { ...game, ...edit };
+        }
+        return game;
+      });
+      return updatedGame.find((game) => game.id === id);
+    },
+  },
 };
